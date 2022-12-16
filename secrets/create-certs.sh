@@ -1,17 +1,15 @@
 #!/bin/bash
-
 set -o nounset \
     -o errexit \
     -o verbose \
     -o xtrace
-
 # Generate CA key
-openssl req -new -x509 -keyout snakeoil-ca-1.key -out snakeoil-ca-1.crt -days 365 -subj '/CN=ca1.test.husseinjoe.io/OU=Dev/O=HusseinJoe/L=Melbourne/ST=VIC/C=AU' -passin pass:confluent -passout pass:confluent
+openssl req -new -x509 -keyout snakeoil-ca-1.key -out snakeoil-ca-1.crt -days 3650 -subj '/CN=localhost/OU=kland/O=kland/L=Beijing/ST=Beijing/C=CH' -passin pass:confluent -passout pass:confluent
 # openssl req -new -x509 -keyout snakeoil-ca-2.key -out snakeoil-ca-2.crt -days 365 -subj '/CN=ca2.test.husseinjoe.io/OU=TEST/O=CONFLUENT/L=PaloAlto/S=Ca/C=US' -passin pass:confluent -passout pass:confluent
 
 # Kafkacat
 openssl genrsa -des3 -passout "pass:confluent" -out kafkacat.client.key 1024
-openssl req -passin "pass:confluent" -passout "pass:confluent" -key kafkacat.client.key -new -out kafkacat.client.req -subj '/CN=kafkacat.test.husseinjoe.io/OU=TEST/O=CONFLUENT/L=PaloAlto/S=Ca/C=US'
+openssl req -passin "pass:confluent" -passout "pass:confluent" -key kafkacat.client.key -new -out kafkacat.client.req -subj '/CN=localhost/OU=kland/O=kland/L=Beijing/ST=Beijing/C=CH'
 openssl x509 -req -CA snakeoil-ca-1.crt -CAkey snakeoil-ca-1.key -in kafkacat.client.req -out kafkacat-ca1-signed.pem -days 9999 -CAcreateserial -passin "pass:confluent"
 
 
